@@ -9,5 +9,12 @@ public class GameManager : MonoBehaviour
     {
         App.gameManager = this;
         App.screenManager.Show<MenuScreen>();
+
+        App.player = new PlayerModel();      // TODO: load player data
+    }
+
+    public void PrepareLevel()
+    {
+        Debug.Log("Preparing the level...");
     }
 }
