@@ -6,9 +6,15 @@ public class ParticleBehaviour : MonoBehaviour
 {
     private float timer;
 
-    void Start()
+    void OnEnable()
     {
         timer = GetComponent<ParticleSystem>().main.duration;
-        Destroy(gameObject, timer);
+        StartCoroutine(DestroyParticle());
+    }
+
+    IEnumerator DestroyParticle()
+    {
+        yield return new WaitForSeconds(timer);
+        gameObject.SetActive(false);
     }
 }

@@ -40,7 +40,8 @@ public class GameManager : MonoBehaviour
             Destroy(collidedCubes[0]);
             Destroy(collidedCubes[1]);
 
-            Instantiate(mergeParticles, collidedCubes[0].transform.position, Quaternion.identity);
+            var particles = App.pool.GetParticle();
+            particles.transform.position = collidedCubes[0].transform.position;
 
             App.player.ChangeScore(collidedCubes[1].GetComponent<CubeBehaviour>().getModel().cubeValue);
 
