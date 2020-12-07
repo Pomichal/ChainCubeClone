@@ -35,7 +35,18 @@ public class InGameScreen : ScreenBase
 
     public void SetScoreText()
     {
-        scoreText.text = "Score: " + App.player.GetScore();
+        int score = App.player.GetScore();
+        string finalText = "";
+        if(score < 1000)
+        {
+            finalText = score.ToString();
+        }
+        if(score >= 1000)
+        {
+            finalText = (score / 1000) + "k";
+        }
+        // TODO: add milions etc.
+        scoreText.text = "Score: " + finalText;
     }
 
     public void IncreaseScore()     // just for testing purposes, remove in final game!!
