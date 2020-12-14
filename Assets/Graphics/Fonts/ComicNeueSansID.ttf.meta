@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5719c859e3c649fa88a9c58f58700afc
+guid: f4f12b54ec898451e903ed209d71dfbc
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Milky Matcha Personal Use
+  fontName: ComicNeueSansID
   fontNames:
-  - Milky Matcha Personal Use
+  - ComicNeueSansID
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

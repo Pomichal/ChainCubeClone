@@ -7,14 +7,19 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+
+
+    public float gameOverZone;
+
     public GameObject cubePrefab;
     public GameObject mergeParticles;
-    
+
+    public GameObject dragableCube;
     public List<GameObject> cubes = new List<GameObject>();
 
     public class ReleaseEvent : UnityEvent<GameObject> {};
     public ReleaseEvent onReleaseEvent = new ReleaseEvent();
-    
+
     public class CollisionEvent : UnityEvent<GameObject[]> {}
     public CollisionEvent onCollisonEvent = new CollisionEvent();
     void Start()
@@ -26,6 +31,7 @@ public class GameManager : MonoBehaviour
         onCollisonEvent.AddListener(HandeCollision);
         onReleaseEvent.AddListener((releasedCubeObject) =>
         {
+            dragableCube = null;
             cubes.Add(releasedCubeObject);
             StartCoroutine("SpawnCube");
         });
@@ -46,10 +52,10 @@ public class GameManager : MonoBehaviour
             {
                 cubes.Remove(collidedCubes[0]);
                 cubes.Remove(collidedCubes[1]);
-                
+
                 int newValue = collidedCubes[0].GetComponent<CubeBehaviour>().GetModel().cubeValue * 2;
                 Vector3 spawnPos = collidedCubes[0].transform.position;
-                
+
                 Destroy(collidedCubes[0]);
                 Destroy(collidedCubes[1]);
 
@@ -59,15 +65,15 @@ public class GameManager : MonoBehaviour
                 App.player.ChangeScore(collidedCubes[1].GetComponent<CubeBehaviour>().GetModel().cubeValue);
 
                 //TODO erase gameObject also from the List
-            
+
                 CubeModel newCube = new CubeModel(newValue);
                 var spawnedCube = Instantiate(cubePrefab, spawnPos, Quaternion.identity);
                 var cubeBehaviourComponent = spawnedCube.GetComponent<CubeBehaviour>();
-            
+
                 cubeBehaviourComponent.SetModel(newCube);
 
                 var sameCube = cubes.DefaultIfEmpty(null).FirstOrDefault(x => x.GetComponent<CubeBehaviour>().GetModel().cubeValue == newValue);
-                
+
                 cubeBehaviourComponent.Jump(sameCube);
                 cubes.Add(spawnedCube);
             }
@@ -78,13 +84,25 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         CubeModel cubeModel = new CubeModel((int) Mathf.Pow(2, Random.Range(1, 7)));
-        var spawnedCube = Instantiate(cubePrefab, new Vector3(0, 1, -5), Quaternion.identity);
-        var cubeBehaviourComponent = spawnedCube.GetComponent<CubeBehaviour>();
+        dragableCube = Instantiate(cubePrefab, new Vector3(0, 1, -5), Quaternion.identity);
+        var cubeBehaviourComponent = dragableCube.GetComponent<CubeBehaviour>();
         cubeBehaviourComponent.SetModel(cubeModel);
+
+        foreach(GameObject cube in cubes)
+        {
+            if(cube.transform.position.z < gameOverZone)
+            {
+                App.screenManager.Show<GameOverScreen>();
+                App.screenManager.Hide<InGameScreen>();
+                DestroyCubes();
+            }
+        }
     }
 
     public void DestroyCubes()
     {
+        if(dragableCube != null)
+            Destroy(dragableCube);
         if(cubes == null)
             return;
         foreach(GameObject cube in cubes)
