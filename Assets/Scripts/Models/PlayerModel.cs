@@ -8,13 +8,13 @@ public class PlayerModel
     public UnityEvent onScoreChanged = new UnityEvent();
 
     private int score;
-    public int highScore;
+    public int highestCubeScore;
     // TODO: add other properties
 
     public PlayerModel()
     {
         score = 0;
-        highScore = 0;
+        highestCubeScore = 16;
     }
 
     public int GetScore()

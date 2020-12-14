@@ -67,6 +67,12 @@ public class GameManager : MonoBehaviour
                 //TODO erase gameObject also from the List
 
                 CubeModel newCube = new CubeModel(newValue);
+
+                if(newValue >= App.player.highestCubeScore)
+                {
+                    App.screenManager.Show<AchievementsScreen>();
+                    App.player.highestCubeScore *= 2;
+                }
                 var spawnedCube = Instantiate(cubePrefab, spawnPos, Quaternion.identity);
                 var cubeBehaviourComponent = spawnedCube.GetComponent<CubeBehaviour>();
 
@@ -109,5 +115,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(cube);
         }
+        cubes = new List<GameObject>();
     }
 }
