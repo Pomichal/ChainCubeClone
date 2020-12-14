@@ -107,7 +107,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f829d5db3f8e91c7ba1b3cb5bd27fa01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDragable: 1
+  colors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0.0073275566, g: 0, b: 1, a: 1}
+  - {r: 0.19745493, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0.9024334, a: 1}
+  - {r: 0.97802067, g: 1, b: 0, a: 1}
+  - {r: 0, g: 0.89326024, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
 --- !u!54 &7520625227651593648
 Rigidbody:
   m_ObjectHideFlags: 0

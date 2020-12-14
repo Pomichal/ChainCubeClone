@@ -7,10 +7,13 @@ using UnityEngine;
 public class CubeBehaviour : MonoBehaviour
 {
     // Start is called before the first frame update
+    
     private Vector3 screenPoint;
     private Vector3 offset;
     private bool isDragable = true;
     private CubeModel model;
+
+    public Color[] colors;
     
     void OnMouseDown()
     {
@@ -22,13 +25,16 @@ public class CubeBehaviour : MonoBehaviour
         }
     }
 
-    public void setModel(CubeModel model)
+    public void SetModel(CubeModel model)
     {
         this.model = model;
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        int colorIndex = (Mathf.RoundToInt(Mathf.Log(model.cubeValue, 2)) - 1) % colors.Length;
         Debug.Log(model.cubeValue);
+        renderer.material.color = colors[colorIndex];
     }
 
-    public CubeModel getModel()
+    public CubeModel GetModel()
     {
         return this.model;
     }
@@ -50,7 +56,7 @@ public class CubeBehaviour : MonoBehaviour
         {
             isDragable = false;
             GetComponent<Rigidbody>().AddForce(new Vector3(0,0,25f), ForceMode.Impulse);
-            App.gameManager.onCubeReleased.Invoke();
+            App.gameManager.onReleaseEvent.Invoke(gameObject);
         }
     }
 
@@ -60,5 +66,11 @@ public class CubeBehaviour : MonoBehaviour
         {
             App.gameManager.onCollisonEvent.Invoke(new [] {this.gameObject, other.gameObject});
         }
+    }
+
+    public void Jump(GameObject pos)
+    {
+        Vector3 dir = pos == null ? Vector3.zero : (pos.transform.position - transform.position).normalized * 3f;
+        GetComponent<Rigidbody>().AddForce(Vector3.up * 10f + dir, ForceMode.Impulse);
     }
 }
